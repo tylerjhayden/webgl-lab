@@ -1,4 +1,3 @@
-import { useCallback } from 'react'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import RawCanvasWrapper from '../../components/RawCanvasWrapper'
@@ -18,14 +17,12 @@ function createScene(container: HTMLDivElement): () => void {
   const controls = new OrbitControls(camera, renderer.domElement)
   controls.enableDamping = true
 
-  // Lights
   const ambient = new THREE.AmbientLight(0xffffff, 0.4)
   scene.add(ambient)
   const directional = new THREE.DirectionalLight(0xffffff, 1)
   directional.position.set(5, 5, 5)
   scene.add(directional)
 
-  // Torus knot
   const geometry = new THREE.TorusKnotGeometry(1, 0.35, 128, 32)
   const material = new THREE.MeshPhysicalMaterial({
     color: '#6366f1',
@@ -37,12 +34,10 @@ function createScene(container: HTMLDivElement): () => void {
   const mesh = new THREE.Mesh(geometry, material)
   scene.add(mesh)
 
-  // Grid helper
   const grid = new THREE.GridHelper(10, 20, '#1a1a2e', '#1a1a2e')
   grid.position.y = -2
   scene.add(grid)
 
-  // Resize handler
   const onResize = () => {
     camera.aspect = container.clientWidth / container.clientHeight
     camera.updateProjectionMatrix()
@@ -50,7 +45,6 @@ function createScene(container: HTMLDivElement): () => void {
   }
   window.addEventListener('resize', onResize)
 
-  // Animation loop
   let frameId: number
   const clock = new THREE.Clock()
 
@@ -65,22 +59,18 @@ function createScene(container: HTMLDivElement): () => void {
   }
   animate()
 
-  // Cleanup
   return () => {
     cancelAnimationFrame(frameId)
     window.removeEventListener('resize', onResize)
     controls.dispose()
     geometry.dispose()
     material.dispose()
+    renderer.getContext().getExtension('WEBGL_lose_context')?.loseContext()
     renderer.dispose()
     container.removeChild(renderer.domElement)
   }
 }
 
 export default function Scene() {
-  const setup = useCallback(
-    (container: HTMLDivElement) => createScene(container),
-    [],
-  )
-  return <RawCanvasWrapper setup={setup} />
+  return <RawCanvasWrapper setup={createScene} />
 }

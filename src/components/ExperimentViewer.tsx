@@ -1,8 +1,7 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { getExperiment } from '../experiments'
 import ExperimentWrapper from './ExperimentWrapper'
-import RawCanvasWrapper from './RawCanvasWrapper'
 
 export default function ExperimentViewer() {
   const { slug } = useParams<{ slug: string }>()
@@ -19,7 +18,7 @@ export default function ExperimentViewer() {
     )
   }
 
-  const LazyScene = lazy(experiment.Scene)
+  const LazyScene = useMemo(() => lazy(experiment.Scene), [experiment.Scene])
 
   return (
     <div className="relative h-[calc(100vh-57px)]">

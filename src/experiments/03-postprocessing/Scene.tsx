@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useControls } from 'leva'
 import { EffectComposer, Bloom, ChromaticAberration, Vignette } from '@react-three/postprocessing'
@@ -14,27 +14,32 @@ function GlowingSpheres() {
     groupRef.current.rotation.y = clock.getElapsedTime() * 0.3
   })
 
+  const spheres = useMemo(
+    () =>
+      Array.from({ length: 8 }, (_, i) => {
+        const angle = (i / 8) * Math.PI * 2
+        const color = new THREE.Color().setHSL(i / 8, 0.8, 0.5)
+        return {
+          position: [Math.cos(angle) * 2, Math.sin(angle) * 0.5, Math.sin(angle) * 2] as const,
+          color,
+        }
+      }),
+    [],
+  )
+
   return (
     <group ref={groupRef}>
-      {Array.from({ length: 8 }, (_, i) => {
-        const angle = (i / 8) * Math.PI * 2
-        const x = Math.cos(angle) * 2
-        const z = Math.sin(angle) * 2
-        const hue = i / 8
-        const color = new THREE.Color().setHSL(hue, 0.8, 0.5)
-
-        return (
-          <mesh key={i} position={[x, Math.sin(angle) * 0.5, z]}>
-            <sphereGeometry args={[0.3, 32, 32]} />
-            <meshStandardMaterial
-              color={color}
-              emissive={color}
-              emissiveIntensity={2}
-              toneMapped={false}
-            />
-          </mesh>
-        )
-      })}
+      {spheres.map((s, i) => (
+        <mesh key={i} position={s.position}>
+          <sphereGeometry args={[0.3, 32, 32]} />
+          <meshStandardMaterial
+            color={s.color}
+            emissive={s.color}
+            emissiveIntensity={2}
+            toneMapped={false}
+          />
+        </mesh>
+      ))}
     </group>
   )
 }
@@ -73,6 +78,11 @@ export default function Scene() {
     },
   )
 
+  const chromaticOffset_v2 = useMemo(
+    () => new THREE.Vector2(chromaticOffset, chromaticOffset),
+    [chromaticOffset],
+  )
+
   return (
     <>
       <ambientLight intensity={0.2} />
@@ -90,7 +100,7 @@ export default function Scene() {
         />
         <ChromaticAberration
           blendFunction={BlendFunction.NORMAL}
-          offset={new THREE.Vector2(chromaticOffset, chromaticOffset)}
+          offset={chromaticOffset_v2}
         />
         <Vignette
           blendFunction={BlendFunction.NORMAL}
