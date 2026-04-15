@@ -105,9 +105,10 @@ function Trail() {
 
 export default function CursorTrail() {
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none">
+    <div className="fixed inset-0 z-[9] pointer-events-none">
       <Canvas
         className="!absolute inset-0"
+        style={{ pointerEvents: 'none' }}
         gl={{ alpha: true, premultipliedAlpha: false, antialias: false }}
         dpr={[1, 1.5]}
         orthographic
