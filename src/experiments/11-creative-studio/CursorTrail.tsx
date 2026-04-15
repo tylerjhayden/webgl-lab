@@ -4,7 +4,7 @@ import * as THREE from 'three'
 import trailVert from './shaders/trail.vert'
 import trailFrag from './shaders/trail.frag'
 
-const COUNT = 40
+const COUNT = 60
 
 function Trail() {
   const pointsRef = useRef<THREE.Points>(null)
@@ -30,18 +30,20 @@ function Trail() {
     const siz = new Float32Array(COUNT)
     const opa = new Float32Array(COUNT)
     for (let i = 0; i < COUNT; i++) {
+      const t = i / COUNT
       pos[i * 3] = 0.5
       pos[i * 3 + 1] = 0.5
       pos[i * 3 + 2] = 0
-      siz[i] = 1.0 - i / COUNT
-      opa[i] = 1.0 - i / COUNT
+      // Steeper size falloff: big lead, fast taper
+      siz[i] = Math.pow(1.0 - t, 1.5)
+      opa[i] = Math.pow(1.0 - t, 1.2)
     }
     return { positions: pos, sizes: siz, opacities: opa }
   }, [])
 
   const uniforms = useMemo(
     () => ({
-      uPointScale: { value: 30.0 },
+      uPointScale: { value: 45.0 },
       uColor: { value: new THREE.Color('#c8f065') },
     }),
     [],
@@ -56,7 +58,7 @@ function Trail() {
     chain[0].y = mouseRef.current.y
 
     for (let i = 1; i < COUNT; i++) {
-      const ease = Math.max(0.35 - i * 0.006, 0.02)
+      const ease = Math.max(0.38 - i * 0.005, 0.015)
       chain[i].x += (chain[i - 1].x - chain[i].x) * ease
       chain[i].y += (chain[i - 1].y - chain[i].y) * ease
     }

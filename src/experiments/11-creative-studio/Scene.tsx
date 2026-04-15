@@ -11,13 +11,24 @@ export default function Scene() {
       <CursorTrail />
       <Hero />
       <Work />
-      <footer
-        className="py-24 text-center"
-        style={{ fontFamily: "'Space Mono', monospace" }}
-      >
-        <p className="text-sm tracking-widest uppercase" style={{ color: '#5a5a6e' }}>
-          Built with Three.js + WebGL
-        </p>
+
+      {/* Footer */}
+      <footer className="relative px-8 md:px-12 pt-16 pb-12" style={{ background: '#06060a' }}>
+        <div className="h-px mb-8" style={{ background: '#1a1a28' }} />
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <p
+            className="text-[10px] tracking-[0.4em] uppercase"
+            style={{ fontFamily: "'Space Mono', monospace", color: '#2a2a3a' }}
+          >
+            Built with Three.js + WebGL
+          </p>
+          <p
+            className="text-[10px] tracking-[0.4em] uppercase"
+            style={{ fontFamily: "'Space Mono', monospace", color: '#1a1a28' }}
+          >
+            WebGL Lab / 2026
+          </p>
+        </div>
       </footer>
     </div>
   )
