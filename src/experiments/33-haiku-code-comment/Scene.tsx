@@ -99,7 +99,7 @@ export default function Scene() {
           </h1>
 
           <p className="text-text-secondary text-lg leading-relaxed">
-            Engineering tribal knowledge, preserved in blocks.
+            Decision records, in the language of code.
           </p>
 
           <div className="flex items-center justify-center gap-3 pointer-events-auto pt-2">

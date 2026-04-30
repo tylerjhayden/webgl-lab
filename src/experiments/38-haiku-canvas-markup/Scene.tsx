@@ -93,13 +93,13 @@ export default function Scene() {
       <div className="relative z-[5] flex flex-col items-center justify-center h-full pt-16 px-4 pointer-events-none">
         <div className="max-w-2xl text-center space-y-6">
           <h1 className="font-mono text-5xl font-bold text-text-primary leading-tight tracking-tight">
-            Annotate everything.
+            Annotate every
             <br />
-            Forget nothing.
+            trade-off.
           </h1>
 
           <p className="text-text-secondary text-lg leading-relaxed">
-            Collaborative tribal knowledge for engineering orgs.
+            A markup-native workspace for ADRs and RFCs.
           </p>
 
           <div className="flex items-center justify-center gap-3 pointer-events-auto pt-2">

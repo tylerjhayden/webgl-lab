@@ -93,13 +93,13 @@ export default function Scene() {
       <div className="relative z-[5] flex flex-col items-center justify-center h-full pt-16 px-4 pointer-events-none">
         <div className="max-w-2xl text-center space-y-6">
           <h1 className="font-serif text-5xl font-bold text-text-primary leading-tight tracking-tight">
-            Archive the
+            Archive
             <br />
-            unwritten rules.
+            the why.
           </h1>
 
           <p className="text-text-secondary text-lg leading-relaxed">
-            Preserve 10 years of engineering wisdom, permanently.
+            Decision records, preserved as protocol.
           </p>
 
           <div className="flex items-center justify-center gap-3 pointer-events-auto pt-2">
@@ -119,16 +119,16 @@ export default function Scene() {
 
       {/* Handwritten overlay with Caveat font */}
       <div className="absolute top-1/4 left-1/3 font-['Caveat',cursive] opacity-15 text-xl pointer-events-none">
-        tribal
+        why
       </div>
       <div className="absolute top-1/3 right-1/4 font-['Caveat',cursive] opacity-15 text-xl pointer-events-none">
-        unwritten
+        trade-off
       </div>
       <div className="absolute bottom-1/3 left-1/4 font-['Caveat',cursive] opacity-15 text-xl pointer-events-none">
-        10x
+        choice
       </div>
       <div className="absolute bottom-1/4 right-1/3 font-['Caveat',cursive] opacity-15 text-xl pointer-events-none">
-        legacy
+        protocol
       </div>
     </div>
   )
