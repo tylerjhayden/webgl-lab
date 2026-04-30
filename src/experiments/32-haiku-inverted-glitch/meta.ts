@@ -1,0 +1,10 @@
+import type { ExperimentMeta } from '../../types/experiment'
+
+export const meta: ExperimentMeta = {
+  title: 'Haiku Inverted Glitch',
+  description: 'Inverted density chars with chaotic multi-frequency noise.',
+  tags: ['shaders', 'ascii', 'hero', 'haiku-designs'],
+  mode: 'raw',
+  difficulty: 3,
+  date: '2026-04-29',
+}
