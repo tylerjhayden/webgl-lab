@@ -1,62 +1,8 @@
-import { useRef, useMemo, useState } from 'react'
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { ScreenQuad } from '@react-three/drei'
-import * as THREE from 'three'
-import vertexShader from './shaders/main.vert'
+import { useState } from 'react'
+import { ShaderHero, useFontAtlas } from '../../components/ShaderHero'
 import fragmentShader from './shaders/main.frag'
 
 const ATLAS_CHARS = ['·', '.', '-', '+', '×', '#', '@', '█']
-const CHAR_SIZE = 64
-const ATLAS_WIDTH = CHAR_SIZE * ATLAS_CHARS.length
-
-function createFontAtlas(): THREE.CanvasTexture {
-  const canvas = document.createElement('canvas')
-  canvas.width = ATLAS_WIDTH
-  canvas.height = CHAR_SIZE
-  const ctx = canvas.getContext('2d')!
-  ctx.fillStyle = 'black'
-  ctx.fillRect(0, 0, ATLAS_WIDTH, CHAR_SIZE)
-  ctx.fillStyle = 'white'
-  ctx.font = `${CHAR_SIZE * 0.8}px monospace`
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  for (let i = 0; i < ATLAS_CHARS.length; i++) {
-    ctx.fillText(ATLAS_CHARS[i], i * CHAR_SIZE + CHAR_SIZE / 2, CHAR_SIZE / 2)
-  }
-  const tex = new THREE.CanvasTexture(canvas)
-  tex.minFilter = THREE.NearestFilter
-  tex.magFilter = THREE.NearestFilter
-  tex.needsUpdate = true
-  return tex
-}
-
-function ShaderQuad() {
-  const materialRef = useRef<THREE.ShaderMaterial>(null)
-  const { size } = useThree()
-  const atlas = useMemo(() => createFontAtlas(), [])
-
-  const uniforms = useMemo(() => ({
-    uTime: { value: 0 },
-    uResolution: { value: new THREE.Vector2(size.width, size.height) },
-    uAtlas: { value: atlas },
-    uAtlasReady: { value: 1.0 },
-  }), [atlas])
-
-  useFrame(({ clock }) => {
-    if (!materialRef.current) return
-    const u = materialRef.current.uniforms
-    u.uTime.value = clock.getElapsedTime()
-    u.uResolution.value.set(size.width, size.height)
-  })
-
-  return (
-    <ScreenQuad>
-      <shaderMaterial ref={materialRef} vertexShader={vertexShader}
-        fragmentShader={fragmentShader} uniforms={uniforms}
-        transparent depthWrite={false} />
-    </ScreenQuad>
-  )
-}
 
 const THEME = {
   '--color-surface': '#D6C29F',
@@ -73,28 +19,27 @@ const THEME = {
 const PAPER_GRAIN =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.18  0 0 0 0 0.12  0 0 0 0 0.05  0 0 0 0.22 0'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>\")"
 
-// torn kraft strip — kraft-colored block with displacement-noisy right edge,
-// positioned to bleed slightly into the canvas-right half
 const TORN_STRIP =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 800' preserveAspectRatio='none'><filter id='t' x='-20%25' y='-2%25' width='140%25' height='104%25'><feTurbulence type='fractalNoise' baseFrequency='0.04 0.55' numOctaves='2' seed='4'/><feDisplacementMap in='SourceGraphic' scale='16'/></filter><rect x='-60' y='0' width='90' height='800' fill='%23D6C29F' filter='url(%23t)'/></svg>\")"
 
-// thin shadow that traces the tear edge (slightly darker rust)
 const TORN_SHADOW =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 800' preserveAspectRatio='none'><filter id='ts'><feTurbulence type='fractalNoise' baseFrequency='0.04 0.55' numOctaves='2' seed='4'/><feDisplacementMap in='SourceGraphic' scale='16'/></filter><rect x='28' y='0' width='2' height='800' fill='%23553015' filter='url(%23ts)'/></svg>\")"
 
 export default function Scene() {
+  const atlas = useFontAtlas(ATLAS_CHARS)
   const [email, setEmail] = useState('')
+
   return (
     <div className="relative w-full h-full bg-surface overflow-hidden" style={THEME}>
       <div className="absolute inset-0 flex">
         <div className="w-1/2 h-full" />
-        <div className="relative w-1/2 h-full">
-          <Canvas className="!absolute inset-0"
-            gl={{ alpha: true, premultipliedAlpha: false, antialias: false }}
-            dpr={[1, 1]}>
-            <ShaderQuad />
-          </Canvas>
-        </div>
+        <ShaderHero
+          fragmentShader={fragmentShader}
+          uniforms={{ uAtlas: { value: atlas } }}
+          className="relative w-1/2 h-full"
+        >
+          <></>
+        </ShaderHero>
       </div>
 
       {/* paper grain — applied to whole surface */}

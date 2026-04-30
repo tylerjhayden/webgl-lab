@@ -1,62 +1,8 @@
-import { useRef, useMemo, useState } from 'react'
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { ScreenQuad } from '@react-three/drei'
-import * as THREE from 'three'
-import vertexShader from './shaders/main.vert'
+import { useState } from 'react'
+import { ShaderHero, useFontAtlas } from '../../components/ShaderHero'
 import fragmentShader from './shaders/main.frag'
 
 const ATLAS_CHARS = ['·', '+', '-', '~', '!', '@', '^', '█']
-const CHAR_SIZE = 64
-const ATLAS_WIDTH = CHAR_SIZE * ATLAS_CHARS.length
-
-function createFontAtlas(): THREE.CanvasTexture {
-  const canvas = document.createElement('canvas')
-  canvas.width = ATLAS_WIDTH
-  canvas.height = CHAR_SIZE
-  const ctx = canvas.getContext('2d')!
-  ctx.fillStyle = 'black'
-  ctx.fillRect(0, 0, ATLAS_WIDTH, CHAR_SIZE)
-  ctx.fillStyle = 'white'
-  ctx.font = `${CHAR_SIZE * 0.8}px monospace`
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  for (let i = 0; i < ATLAS_CHARS.length; i++) {
-    ctx.fillText(ATLAS_CHARS[i], i * CHAR_SIZE + CHAR_SIZE / 2, CHAR_SIZE / 2)
-  }
-  const tex = new THREE.CanvasTexture(canvas)
-  tex.minFilter = THREE.NearestFilter
-  tex.magFilter = THREE.NearestFilter
-  tex.needsUpdate = true
-  return tex
-}
-
-function ShaderQuad() {
-  const materialRef = useRef<THREE.ShaderMaterial>(null)
-  const { size } = useThree()
-  const atlas = useMemo(() => createFontAtlas(), [])
-
-  const uniforms = useMemo(() => ({
-    uTime: { value: 0 },
-    uResolution: { value: new THREE.Vector2(size.width, size.height) },
-    uAtlas: { value: atlas },
-    uAtlasReady: { value: 1.0 },
-  }), [atlas])
-
-  useFrame(({ clock }) => {
-    if (!materialRef.current) return
-    const u = materialRef.current.uniforms
-    u.uTime.value = clock.getElapsedTime()
-    u.uResolution.value.set(size.width, size.height)
-  })
-
-  return (
-    <ScreenQuad>
-      <shaderMaterial ref={materialRef} vertexShader={vertexShader}
-        fragmentShader={fragmentShader} uniforms={uniforms}
-        transparent depthWrite={false} />
-    </ScreenQuad>
-  )
-}
 
 const THEME = {
   '--color-surface': '#EFE7D2',
@@ -77,16 +23,17 @@ const PAPER_GRAIN =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0 0.07  0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>\")"
 
 export default function Scene() {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const atlas = useFontAtlas(ATLAS_CHARS)
   const [email, setEmail] = useState('')
+
   return (
-    <div ref={containerRef} className="relative w-full h-full bg-surface overflow-hidden" style={THEME}>
+    <ShaderHero
+      fragmentShader={fragmentShader}
+      uniforms={{ uAtlas: { value: atlas } }}
+      theme={THEME}
+      className="relative w-full h-full bg-surface overflow-hidden"
+    >
       <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: RULED_LINES }} />
-      <Canvas className="!absolute inset-0"
-        gl={{ alpha: true, premultipliedAlpha: false, antialias: false }}
-        dpr={[1, 1]}>
-        <ShaderQuad />
-      </Canvas>
       <div className="absolute inset-0 pointer-events-none mix-blend-multiply opacity-60"
         style={{ backgroundImage: PAPER_GRAIN, backgroundSize: '240px 240px' }} />
 
@@ -132,6 +79,6 @@ export default function Scene() {
           </div>
         </div>
       </div>
-    </div>
+    </ShaderHero>
   )
 }

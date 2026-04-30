@@ -1,75 +1,8 @@
-import { useRef, useMemo, useState } from 'react'
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { ScreenQuad } from '@react-three/drei'
-import * as THREE from 'three'
-import vertexShader from './shaders/topology.vert'
+import { useState } from 'react'
+import { ShaderHero, useFontAtlas } from '../../components/ShaderHero'
 import fragmentShader from './shaders/memdump.frag'
 
 const ATLAS_CHARS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
-const CHAR_SIZE = 64
-const ATLAS_WIDTH = CHAR_SIZE * ATLAS_CHARS.length
-
-function createFontAtlas(): THREE.CanvasTexture {
-  const canvas = document.createElement('canvas')
-  canvas.width = ATLAS_WIDTH
-  canvas.height = CHAR_SIZE
-  const ctx = canvas.getContext('2d')!
-
-  ctx.fillStyle = 'black'
-  ctx.fillRect(0, 0, ATLAS_WIDTH, CHAR_SIZE)
-
-  ctx.fillStyle = 'white'
-  ctx.font = `${CHAR_SIZE * 0.78}px monospace`
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-
-  for (let i = 0; i < ATLAS_CHARS.length; i++) {
-    ctx.fillText(ATLAS_CHARS[i], i * CHAR_SIZE + CHAR_SIZE / 2, CHAR_SIZE / 2)
-  }
-
-  const texture = new THREE.CanvasTexture(canvas)
-  texture.minFilter = THREE.NearestFilter
-  texture.magFilter = THREE.NearestFilter
-  texture.needsUpdate = true
-  return texture
-}
-
-function MemDumpQuad() {
-  const materialRef = useRef<THREE.ShaderMaterial>(null)
-  const { size } = useThree()
-
-  const atlas = useMemo(() => createFontAtlas(), [])
-
-  const uniforms = useMemo(
-    () => ({
-      uTime: { value: 0 },
-      uResolution: { value: new THREE.Vector2(size.width, size.height) },
-      uAtlas: { value: atlas },
-      uAtlasReady: { value: 1.0 },
-    }),
-    [atlas],
-  )
-
-  useFrame(({ clock }) => {
-    if (!materialRef.current) return
-    const u = materialRef.current.uniforms
-    u.uTime.value = clock.getElapsedTime()
-    u.uResolution.value.set(size.width, size.height)
-  })
-
-  return (
-    <ScreenQuad>
-      <shaderMaterial
-        ref={materialRef}
-        vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
-        uniforms={uniforms}
-        transparent
-        depthWrite={false}
-      />
-    </ScreenQuad>
-  )
-}
 
 const GUTTER_ADDRESSES = [
   '0x00',
@@ -83,20 +16,11 @@ const GUTTER_ADDRESSES = [
 ]
 
 export default function Scene() {
+  const atlas = useFontAtlas(ATLAS_CHARS, { fontScale: 0.78 })
   const [email, setEmail] = useState('')
 
   return (
-    <div className="relative w-full h-full bg-surface">
-      {/* WebGL layer */}
-      <Canvas
-        className="!absolute inset-0"
-        gl={{ alpha: true, premultipliedAlpha: false, antialias: false }}
-        dpr={[1, 1]}
-      >
-        <MemDumpQuad />
-      </Canvas>
-
-      {/* DOM hero overlay */}
+    <ShaderHero fragmentShader={fragmentShader} uniforms={{ uAtlas: { value: atlas } }}>
       <div className="relative z-[5] flex items-center justify-center h-full pt-16 px-4 pointer-events-none">
         <div className="flex items-start gap-6">
           {/* Line-numbered gutter */}
@@ -129,6 +53,6 @@ export default function Scene() {
           </div>
         </div>
       </div>
-    </div>
+    </ShaderHero>
   )
 }
