@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import type { Experiment } from '../types/experiment'
+import DifficultyDots from './DifficultyDots'
 
 const gradients = [
   'from-indigo-500/20 to-purple-500/20',
@@ -36,16 +37,7 @@ export default function ExperimentCard({ experiment, index }: ExperimentCardProp
           <h3 className="text-text-primary font-semibold text-sm group-hover:text-accent-hover transition-colors">
             {experiment.title}
           </h3>
-          <div className="flex gap-0.5">
-            {Array.from({ length: 3 }, (_, i) => (
-              <div
-                key={i}
-                className={`w-1.5 h-1.5 rounded-full ${
-                  i < experiment.difficulty ? 'bg-accent' : 'bg-border-subtle'
-                }`}
-              />
-            ))}
-          </div>
+          <DifficultyDots level={experiment.difficulty} />
         </div>
         <p className="text-text-muted text-xs leading-relaxed mb-3">
           {experiment.description}
