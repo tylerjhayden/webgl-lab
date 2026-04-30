@@ -46,9 +46,7 @@ export default function FolderPicker({ slug, current, folders }: FolderPickerPro
     setOpen((v) => !v)
   }
 
-  const onCreateSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
+  const submitDraft = () => {
     const name = draft.trim()
     if (!name) return
     void post(name)
@@ -91,7 +89,11 @@ export default function FolderPicker({ slug, current, folders }: FolderPickerPro
                 <button
                   key={name}
                   type="button"
-                  onClick={() => void post(name)}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    void post(name)
+                  }}
                   className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-text-secondary hover:bg-surface-overlay hover:text-text-primary"
                 >
                   <span className={`inline-block w-1.5 h-1.5 rounded-full ${current === name ? 'bg-accent' : 'bg-transparent border border-border-subtle'}`} />
@@ -103,13 +105,19 @@ export default function FolderPicker({ slug, current, folders }: FolderPickerPro
           )}
 
           {creating ? (
-            <form onSubmit={onCreateSubmit} className="px-2 py-1">
+            <div className="px-2 py-1">
               <input
                 autoFocus
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
                 onKeyDown={(e) => {
-                  if (e.key === 'Escape') {
+                  e.stopPropagation()
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    submitDraft()
+                  } else if (e.key === 'Escape') {
+                    e.preventDefault()
                     setCreating(false)
                     setDraft('')
                   }
@@ -118,11 +126,15 @@ export default function FolderPicker({ slug, current, folders }: FolderPickerPro
                 placeholder="Folder name"
                 className="w-full rounded border border-border-subtle bg-surface-overlay px-2 py-1 text-text-primary outline-none focus:border-accent"
               />
-            </form>
+            </div>
           ) : (
             <button
               type="button"
-              onClick={() => setCreating(true)}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setCreating(true)
+              }}
               className="block w-full px-3 py-1.5 text-left text-text-secondary hover:bg-surface-overlay hover:text-text-primary"
             >
               + New folder…
@@ -132,7 +144,11 @@ export default function FolderPicker({ slug, current, folders }: FolderPickerPro
           {current && (
             <button
               type="button"
-              onClick={() => void post(null)}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                void post(null)
+              }}
               className="block w-full px-3 py-1.5 text-left text-text-muted hover:bg-surface-overlay hover:text-text-primary"
             >
               ✕ Remove from folder
