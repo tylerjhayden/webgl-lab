@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { ScreenQuad } from '@react-three/drei'
 import * as THREE from 'three'
@@ -26,13 +26,16 @@ export type ShaderHeroProps = {
 type ShaderQuadProps = Pick<
   ShaderHeroProps,
   'fragmentShader' | 'vertexShader' | 'uniforms' | 'interactive'
->
+> & {
+  pointerUvRef: React.RefObject<THREE.Vector2>
+}
 
 function ShaderQuad({
   fragmentShader,
   vertexShader,
   uniforms: extra,
   interactive,
+  pointerUvRef,
 }: ShaderQuadProps) {
   const materialRef = useRef<THREE.ShaderMaterial>(null)
   const mouseRef = useRef(new THREE.Vector2(0.5, 0.5))
@@ -55,21 +58,19 @@ function ShaderQuad({
       }
     }
     return base
-    // Initial layout only — `extra` values sync per-frame below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [interactive])
 
-  useFrame(({ clock, pointer }) => {
+  useFrame(({ clock }) => {
     const m = materialRef.current
     if (!m) return
     const u = m.uniforms
     u.uTime.value = clock.getElapsedTime()
     u.uResolution.value.set(size.width, size.height)
     if (interactive && u.uMouse) {
-      const targetX = (pointer.x + 1) * 0.5
-      const targetY = (pointer.y + 1) * 0.5
-      mouseRef.current.x += (targetX - mouseRef.current.x) * 0.08
-      mouseRef.current.y += (targetY - mouseRef.current.y) * 0.08
+      const target = pointerUvRef.current
+      mouseRef.current.x += (target.x - mouseRef.current.x) * 0.08
+      mouseRef.current.y += (target.y - mouseRef.current.y) * 0.08
       u.uMouse.value.copy(mouseRef.current)
     }
     if (extra) {
@@ -104,6 +105,21 @@ export function ShaderHero({
   children,
 }: ShaderHeroProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const pointerUvRef = useRef(new THREE.Vector2(0.5, 0.5))
+
+  useEffect(() => {
+    if (!interactive) return
+    const el = containerRef.current
+    if (!el) return
+    const onMove = (e: PointerEvent) => {
+      const rect = el.getBoundingClientRect()
+      const x = (e.clientX - rect.left) / rect.width
+      const y = 1 - (e.clientY - rect.top) / rect.height
+      pointerUvRef.current.set(x, y)
+    }
+    el.addEventListener('pointermove', onMove)
+    return () => el.removeEventListener('pointermove', onMove)
+  }, [interactive])
 
   return (
     <div ref={containerRef} className={className} style={theme}>
@@ -111,18 +127,13 @@ export function ShaderHero({
         className="!absolute inset-0"
         gl={{ alpha: true, premultipliedAlpha: false, antialias: false }}
         dpr={dpr}
-        {...(interactive
-          ? {
-              eventSource: containerRef as React.RefObject<HTMLElement>,
-              eventPrefix: 'client' as const,
-            }
-          : {})}
       >
         <ShaderQuad
           fragmentShader={fragmentShader}
           vertexShader={vertexShader}
           uniforms={uniforms}
           interactive={interactive}
+          pointerUvRef={pointerUvRef}
         />
       </Canvas>
       {children}
