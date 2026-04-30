@@ -38,10 +38,8 @@ function ShaderQuad({
   const mouseRef = useRef(new THREE.Vector2(0.5, 0.5))
   const { size } = useThree()
 
-  // Captured once: extras' IUniform refs are stable across renders in this
-  // codebase (atlases come from useFontAtlas / useMemo). Re-creating the
-  // merged uniforms object every render would replace IUniforms mid-flight
-  // and flash uTime back to zero on unrelated state changes.
+  // Build the full uniform layout once. Keys must be present at material
+  // creation; values are synced every frame from the latest `extra` prop.
   const uniforms = useMemo(() => {
     const base: Record<string, THREE.IUniform> = {
       uTime: { value: 0 },
@@ -51,7 +49,13 @@ function ShaderQuad({
     if (interactive) {
       base.uMouse = { value: new THREE.Vector2(0.5, 0.5) }
     }
-    return { ...base, ...(extra ?? {}) }
+    if (extra) {
+      for (const key of Object.keys(extra)) {
+        base[key] = { value: extra[key].value }
+      }
+    }
+    return base
+    // Initial layout only — `extra` values sync per-frame below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [interactive])
 
@@ -67,6 +71,11 @@ function ShaderQuad({
       mouseRef.current.x += (targetX - mouseRef.current.x) * 0.08
       mouseRef.current.y += (targetY - mouseRef.current.y) * 0.08
       u.uMouse.value.copy(mouseRef.current)
+    }
+    if (extra) {
+      for (const key in extra) {
+        if (u[key]) u[key].value = extra[key].value
+      }
     }
   })
 
