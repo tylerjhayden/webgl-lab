@@ -4,7 +4,7 @@ export const meta: ExperimentMeta = {
   title: 'Haiku Code Comment',
   description: 'Block characters with very slow drift. The visual of accumulated comments.',
   tags: ['shaders', 'ascii', 'hero', 'haiku-designs'],
-  mode: 'raw',
+  ownsCanvas: true,
   difficulty: 3,
   date: '2026-04-29',
 }

@@ -85,12 +85,12 @@ export default function ExperimentViewer() {
             </div>
           }
         >
-          {experiment.mode === 'r3f' ? (
+          {experiment.ownsCanvas ? (
+            <LazyScene key={experiment.slug} />
+          ) : (
             <ExperimentWrapper>
               <LazyScene key={experiment.slug} />
             </ExperimentWrapper>
-          ) : (
-            <LazyScene key={experiment.slug} />
           )}
         </Suspense>
       </SceneErrorBoundary>

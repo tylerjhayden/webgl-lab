@@ -5,7 +5,7 @@ export const meta: ExperimentMeta = {
   description:
     'Complete SaaS landing page with embedded WebGL effects — perspective grid hero + aurora bento features',
   tags: ['shaders', 'hero', 'features', 'interactive', 'landing-page'],
-  mode: 'raw',
+  ownsCanvas: true,
   difficulty: 3,
   date: '2026-04-15',
 }

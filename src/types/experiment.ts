@@ -4,7 +4,7 @@ export interface ExperimentMeta {
   title: string
   description: string
   tags: string[]
-  mode: 'r3f' | 'raw'
+  ownsCanvas: boolean
   difficulty: 1 | 2 | 3
   date: string
 }

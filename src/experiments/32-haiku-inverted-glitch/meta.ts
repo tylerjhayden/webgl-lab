@@ -4,7 +4,7 @@ export const meta: ExperimentMeta = {
   title: 'Haiku Inverted Glitch',
   description: 'Inverted density chars with chaotic multi-frequency noise.',
   tags: ['shaders', 'ascii', 'hero', 'haiku-designs'],
-  mode: 'raw',
+  ownsCanvas: true,
   difficulty: 3,
   date: '2026-04-29',
 }

@@ -4,7 +4,7 @@ export const meta: ExperimentMeta = {
   title: 'Crystal Transmission',
   description: 'Glass torus knot refracting colorful floating shapes with chromatic aberration',
   tags: ['materials', 'refraction', 'drei'],
-  mode: 'r3f',
+  ownsCanvas: false,
   difficulty: 2,
   date: '2026-04-15',
 }

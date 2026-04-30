@@ -27,7 +27,7 @@ export default function ExperimentCard({ experiment, index }: ExperimentCardProp
       {/* Gradient header */}
       <div className={`h-32 bg-gradient-to-br ${gradient} flex items-center justify-center`}>
         <span className="text-4xl opacity-50 group-hover:opacity-80 transition-opacity">
-          {experiment.mode === 'r3f' ? '▲' : '◆'}
+          {experiment.ownsCanvas ? '◆' : '▲'}
         </span>
       </div>
 

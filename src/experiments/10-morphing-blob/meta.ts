@@ -4,7 +4,7 @@ export const meta: ExperimentMeta = {
   title: 'Morphing Blob',
   description: 'Organic noise-distorted sphere with iridescent PBR material and bloom glow',
   tags: ['materials', 'animation', 'drei'],
-  mode: 'r3f',
+  ownsCanvas: false,
   difficulty: 1,
   date: '2026-04-15',
 }
