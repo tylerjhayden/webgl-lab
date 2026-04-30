@@ -10,6 +10,9 @@ dist/
 # Build artifacts
 tsconfig.tsbuildinfo
 
+# Stray npm lockfile — repo uses pnpm
+package-lock.json
+
 # Minerva (personal config + data)
 .minerva/
 .claude/settings.local.json
