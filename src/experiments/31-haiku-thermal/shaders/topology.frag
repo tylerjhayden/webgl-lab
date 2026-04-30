@@ -14,8 +14,8 @@ const float CHAR_COUNT = 8.0;
 const float NOISE_SCALE = 0.04;
 
 vec3 heatmap(float t) {
-  vec3 a = mix(vec3(0.9,0.1,0.0), vec3(1.0,0.55,0.0), clamp(t*2.0,0.,1.));
-  vec3 b = mix(vec3(1.0,0.55,0.0), vec3(1.0,1.0,1.0), clamp(t*2.0-1.0,0.,1.));
+  vec3 a = mix(vec3(0.22,0.16,0.10), vec3(0.72,0.42,0.26), clamp(t*2.0,0.,1.));
+  vec3 b = mix(vec3(0.72,0.42,0.26), vec3(0.95,0.91,0.82), clamp(t*2.0-1.0,0.,1.));
   return mix(a, b, step(0.5, t));
 }
 

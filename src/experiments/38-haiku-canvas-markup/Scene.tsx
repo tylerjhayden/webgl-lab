@@ -88,11 +88,11 @@ export default function Scene() {
       className="relative w-full h-full bg-surface"
       style={
         {
-          '--color-surface': '#f4efe4',
-          '--color-text-primary': '#1f1d1a',
+          '--color-surface': '#f4ecdc',
+          '--color-text-primary': '#1a1814',
           '--color-text-secondary': '#5a574f',
           '--color-text-muted': '#8a8478',
-          '--color-border-subtle': 'rgba(31, 29, 26, 0.18)',
+          '--color-border-subtle': 'rgba(26, 24, 20, 0.18)',
         } as React.CSSProperties
       }
     >
@@ -111,7 +111,7 @@ export default function Scene() {
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: paperGrain,
-          opacity: 0.06,
+          opacity: 0.08,
           mixBlendMode: 'multiply',
           zIndex: 2,
         }}
@@ -155,9 +155,10 @@ export default function Scene() {
             <button
               className="rounded-sm px-5 py-2.5 text-sm font-medium whitespace-nowrap transition-colors"
               style={{
-                background: '#1f1d1a',
-                color: '#f4efe4',
-                fontFamily: "'Inter', system-ui, sans-serif",
+                background: '#1a1814',
+                color: '#f4ecdc',
+                fontFamily: "'Fraunces', 'Times New Roman', serif",
+                fontWeight: 500,
               }}
             >
               Get early access

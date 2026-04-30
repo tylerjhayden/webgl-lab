@@ -78,8 +78,24 @@ export default function Scene() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [email, setEmail] = useState('')
 
+  const paperGrain = `url("data:image/svg+xml;utf8,${encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.22  0 0 0 0 0.16  0 0 0 0 0.10  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>`,
+  )}")`
+
   return (
-    <div ref={containerRef} className="relative w-full h-full bg-surface">
+    <div
+      ref={containerRef}
+      className="relative w-full h-full bg-surface"
+      style={
+        {
+          '--color-surface': '#e8dcc4',
+          '--color-text-primary': '#382818',
+          '--color-text-secondary': '#604a36',
+          '--color-text-muted': '#8a7558',
+          '--color-border-subtle': 'rgba(56, 40, 24, 0.22)',
+        } as React.CSSProperties
+      }
+    >
       <Canvas
         className="!absolute inset-0"
         gl={{ alpha: true, premultipliedAlpha: false, antialias: false }}
@@ -90,15 +106,37 @@ export default function Scene() {
         <TopologyQuad />
       </Canvas>
 
+      {/* Paper grain overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: paperGrain,
+          opacity: 0.07,
+          mixBlendMode: 'multiply',
+          zIndex: 2,
+        }}
+      />
+
       <div className="relative z-[5] flex flex-col items-center justify-center h-full pt-16 px-4 pointer-events-none">
         <div className="max-w-2xl text-center space-y-6">
-          <h1 className="font-mono text-5xl font-bold text-text-primary leading-tight tracking-tight">
+          <h1
+            className="text-5xl text-text-primary leading-tight tracking-tight"
+            style={{
+              fontFamily: "'Fraunces', 'Times New Roman', serif",
+              fontStyle: 'italic',
+              fontWeight: 600,
+              fontVariationSettings: "'opsz' 96",
+            }}
+          >
             Where the
             <br />
             hot decisions live.
           </h1>
 
-          <p className="text-text-secondary text-lg leading-relaxed">
+          <p
+            className="text-text-secondary text-lg leading-relaxed"
+            style={{ fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 400 }}
+          >
             Trade-offs, captured before they cool.
           </p>
 
@@ -108,9 +146,21 @@ export default function Scene() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com"
-              className="bg-surface-raised/60 backdrop-blur-sm border border-border-subtle rounded-lg px-4 py-2.5 text-text-primary placeholder:text-text-muted text-sm w-64 focus:outline-none focus:border-accent transition-colors"
+              className="rounded-sm px-4 py-2.5 text-text-primary placeholder:text-text-muted text-sm w-64 focus:outline-none transition-colors"
+              style={{
+                background: 'rgba(255, 250, 238, 0.7)',
+                border: '1px solid rgba(56, 40, 24, 0.3)',
+                fontFamily: "'Inter', system-ui, sans-serif",
+              }}
             />
-            <button className="bg-accent hover:bg-accent-hover text-white font-medium px-5 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap">
+            <button
+              className="rounded-sm px-5 py-2.5 text-sm font-medium whitespace-nowrap transition-colors"
+              style={{
+                background: '#382818',
+                color: '#f0e8d8',
+                fontFamily: "'Inter', system-ui, sans-serif",
+              }}
+            >
               Get early access
             </button>
           </div>

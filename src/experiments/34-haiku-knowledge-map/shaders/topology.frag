@@ -13,8 +13,8 @@ const float GRID_COLS = 120.0;
 const float CHAR_COUNT = 8.0;
 const float NOISE_SCALE = 0.04;
 
-const vec3 BASE_COLOR = vec3(0.39, 0.42, 0.53);
-const vec3 ACCENT_COLOR = vec3(0.388, 0.4, 0.945);
+const vec3 BASE_COLOR = vec3(0.42, 0.46, 0.32);   // sage pencil
+const vec3 ACCENT_COLOR = vec3(0.36, 0.26, 0.18); // walnut
 
 float fbm(vec3 p) {
   return snoise(p)*0.5 + snoise(p*2.0)*0.25 + snoise(p*4.0)*0.125;

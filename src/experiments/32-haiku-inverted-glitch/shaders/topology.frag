@@ -12,8 +12,8 @@ varying vec2 vUv;
 const float GRID_COLS = 120.0;
 const float CHAR_COUNT = 8.0;
 
-const vec3 BASE_COLOR = vec3(0.39, 0.42, 0.53);
-const vec3 ACCENT_COLOR = vec3(0.388, 0.4, 0.945);
+const vec3 BASE_COLOR = vec3(0.18, 0.14, 0.12);   // walnut ink
+const vec3 ACCENT_COLOR = vec3(0.55, 0.30, 0.20); // faded vermilion
 
 void main() {
   float aspect = uResolution.x / uResolution.y;
