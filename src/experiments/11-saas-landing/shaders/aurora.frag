@@ -1,6 +1,6 @@
 precision highp float;
 
-#include "noise.glsl"
+#include "../../../shaders/noise.glsl"
 
 varying vec2 vUv;
 
