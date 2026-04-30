@@ -120,7 +120,7 @@ function TopologyQuad() {
     u.uResolution.value.set(size.width, size.height)
 
     frameCountRef.current++
-    if (frameCountRef.current % 8 === 0) {
+    if (frameCountRef.current % 4 === 0) {
       const next = conwayStep(lifeGridRef.current)
       lifeGridRef.current = next
       lifeTexture.image.data.set(next)
@@ -147,7 +147,20 @@ export default function Scene() {
   const [email, setEmail] = useState('')
 
   return (
-    <div ref={containerRef} className="relative w-full h-full bg-surface">
+    <div
+      ref={containerRef}
+      className="relative w-full h-full bg-surface"
+      style={
+        {
+          '--color-surface': '#040804',
+          '--color-text-primary': '#c8ffb0',
+          '--color-text-secondary': '#7aa56a',
+          '--color-text-muted': '#4a6840',
+          '--brutalist-border': '#5a6b2a',
+          '--brutalist-accent': '#63ff0d',
+        } as React.CSSProperties
+      }
+    >
       <Canvas
         className="!absolute inset-0"
         gl={{ alpha: true, premultipliedAlpha: false, antialias: false }}
@@ -160,13 +173,24 @@ export default function Scene() {
 
       <div className="relative z-[5] flex flex-col items-center justify-center h-full pt-16 px-4 pointer-events-none">
         <div className="max-w-2xl text-center space-y-6">
-          <h1 className="font-mono text-5xl font-bold text-text-primary leading-tight tracking-tight">
-            Decisions
-            <br />
-            that compound.
-          </h1>
+          <div
+            className="inline-block px-6 py-4"
+            style={{ border: '2px solid var(--brutalist-border)' }}
+          >
+            <h1
+              className="font-mono text-5xl text-text-primary leading-tight tracking-tight uppercase"
+              style={{ fontWeight: 900 }}
+            >
+              Decisions
+              <br />
+              that compound.
+            </h1>
+          </div>
 
-          <p className="text-text-secondary text-lg leading-relaxed">
+          <p
+            className="text-text-secondary text-lg leading-relaxed tracking-wide"
+            style={{ fontFamily: "'JetBrains Mono', ui-monospace, monospace", fontWeight: 400 }}
+          >
             A living protocol for engineering teams.
           </p>
 
@@ -176,9 +200,22 @@ export default function Scene() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com"
-              className="bg-surface-raised/60 backdrop-blur-sm border border-border-subtle rounded-lg px-4 py-2.5 text-text-primary placeholder:text-text-muted text-sm w-64 focus:outline-none focus:border-accent transition-colors"
+              className="rounded-none px-4 py-2.5 text-text-primary placeholder:text-text-muted text-sm w-64 focus:outline-none transition-colors"
+              style={{
+                background: 'rgba(4, 8, 4, 0.7)',
+                border: '2px solid var(--brutalist-border)',
+                fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+              }}
             />
-            <button className="bg-accent hover:bg-accent-hover text-white font-medium px-5 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap">
+            <button
+              className="rounded-none px-5 py-2.5 text-sm font-bold uppercase tracking-tight whitespace-nowrap transition-colors"
+              style={{
+                background: 'var(--brutalist-accent)',
+                color: '#040804',
+                border: '2px solid var(--brutalist-border)',
+                fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+              }}
+            >
               Get early access
             </button>
           </div>

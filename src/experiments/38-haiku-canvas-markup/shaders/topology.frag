@@ -11,9 +11,10 @@ varying vec2 vUv;
 
 const float GRID_COLS = 120.0;
 const float CHAR_COUNT = 8.0;
-const float NOISE_SCALE = 0.04;
+const float NOISE_SCALE = 0.028;
 
-const vec3 BASE_COLOR = vec3(0.39, 0.42, 0.53);
+const vec3 BASE_COLOR = vec3(0.78, 0.74, 0.62);
+const vec3 ACCENT_COLOR = vec3(0.55, 0.62, 0.42);
 
 void main() {
   float aspect = uResolution.x / uResolution.y;
@@ -21,8 +22,9 @@ void main() {
 
   vec2 cell = floor(vUv * gridSize);
 
-  float n = snoise(vec3(cell.x * NOISE_SCALE, cell.y * NOISE_SCALE, uTime * 0.12));
-  n = n * 0.5 + 0.5;
+  // Slower, softer noise — ink bleeding into paper, not a screen
+  float n = snoise(vec3(cell.x * NOISE_SCALE, cell.y * NOISE_SCALE, uTime * 0.075));
+  n = smoothstep(-0.6, 0.6, n);
 
   float charIdx = floor(n * (CHAR_COUNT - 0.01));
 
@@ -30,8 +32,9 @@ void main() {
   vec2 atlasUv = vec2((charIdx + localUv.x) / CHAR_COUNT, localUv.y);
   float charAlpha = texture2D(uAtlas, atlasUv).r;
 
-  vec3 color = BASE_COLOR * (0.25 + n * 0.65);
+  float colorBlend = smoothstep(0.55, 0.85, n);
+  vec3 color = mix(BASE_COLOR, ACCENT_COLOR, colorBlend);
 
-  float alpha = charAlpha * (0.3 + n * 0.55) * uAtlasReady;
+  float alpha = charAlpha * (0.25 + n * 0.5) * uAtlasReady;
   gl_FragColor = vec4(color, alpha);
 }

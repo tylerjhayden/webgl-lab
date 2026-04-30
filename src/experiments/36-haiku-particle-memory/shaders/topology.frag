@@ -13,8 +13,8 @@ const float GRID_COLS = 120.0;
 const float CHAR_COUNT = 8.0;
 const float NOISE_SCALE = 0.04;
 
-const vec3 BASE_COLOR = vec3(0.39, 0.42, 0.53);
-const vec3 ACCENT_COLOR = vec3(0.58, 0.25, 0.95);
+const vec3 BASE_COLOR = vec3(0.16, 0.10, 0.18);
+const vec3 ACCENT_COLOR = vec3(1.0, 0.42, 0.38);
 
 void main() {
   float aspect = uResolution.x / uResolution.y;
@@ -35,6 +35,13 @@ void main() {
   float colorBlend = smoothstep(0.55, 0.80, n);
   vec3 color = mix(BASE_COLOR, ACCENT_COLOR, colorBlend);
 
-  float alpha = charAlpha * (0.3 + n * 0.55) * uAtlasReady;
+  // Subtle radial rose haze — warmth from the center
+  vec2 fromCenter = vUv - 0.5;
+  fromCenter.x *= aspect;
+  color += vec3(0.15, 0.05, 0.05) * exp(-length(fromCenter) * 1.5);
+
+  // Slow inhale/exhale breathing on the glow
+  float breath = 0.6 + 0.4 * sin(uTime * 0.4);
+  float alpha = charAlpha * (0.3 + n * 0.55) * breath * uAtlasReady;
   gl_FragColor = vec4(color, alpha);
 }

@@ -13,8 +13,8 @@ varying vec2 vUv;
 const float GRID_COLS = 120.0;
 const float CHAR_COUNT = 8.0;
 
-const vec3 BASE_COLOR = vec3(0.39, 0.42, 0.53);
-const vec3 ACCENT_COLOR = vec3(0.15, 0.9, 0.3);
+const vec3 BASE_COLOR = vec3(0.18, 0.22, 0.10);
+const vec3 ACCENT_COLOR = vec3(0.39, 1.0, 0.05);
 
 void main() {
   float aspect = uResolution.x / uResolution.y;
@@ -23,7 +23,6 @@ void main() {
   vec2 cell = floor(vUv * gridSize);
   vec2 cellCenter = (cell + 0.5) / gridSize;
 
-  // Read Life state from texture
   vec2 lifeUv = cell / vec2(GRID_COLS, GRID_COLS / aspect);
   float n = texture2D(uLifeState, lifeUv).r;
 
@@ -33,10 +32,12 @@ void main() {
   vec2 atlasUv = vec2((charIdx + localUv.x) / CHAR_COUNT, localUv.y);
   float charAlpha = texture2D(uAtlas, atlasUv).r;
 
-  // Color via position gradient: left-gray → right-accent
   float colorBlend = smoothstep(0.3, 0.7, cellCenter.x);
   vec3 color = mix(BASE_COLOR, ACCENT_COLOR, colorBlend);
 
-  float alpha = charAlpha * (0.3 + n * 0.55) * uAtlasReady;
+  float flicker = fract(sin(cell.x * 12.9898 + cell.y * 78.233) * 43758.5453 + uTime * 1.7);
+  float flickerMod = 0.85 + 0.15 * flicker;
+
+  float alpha = charAlpha * (0.3 + n * 0.55) * flickerMod * uAtlasReady;
   gl_FragColor = vec4(color, alpha);
 }

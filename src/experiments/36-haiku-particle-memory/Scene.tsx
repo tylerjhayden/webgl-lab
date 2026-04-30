@@ -80,7 +80,18 @@ export default function Scene() {
   const [email, setEmail] = useState('')
 
   return (
-    <div ref={containerRef} className="relative w-full h-full bg-surface">
+    <div
+      ref={containerRef}
+      className="relative w-full h-full bg-surface"
+      style={
+        {
+          '--color-surface': '#100a0c',
+          '--color-text-primary': '#f7e6e0',
+          '--color-text-secondary': '#c9a89e',
+          '--color-text-muted': '#7a5d57',
+        } as React.CSSProperties
+      }
+    >
       <Canvas
         className="!absolute inset-0"
         gl={{ alpha: true, premultipliedAlpha: false, antialias: false }}
@@ -93,13 +104,23 @@ export default function Scene() {
 
       <div className="relative z-[5] flex flex-col items-center justify-center h-full pt-16 px-4 pointer-events-none">
         <div className="max-w-2xl text-center space-y-6">
-          <h1 className="font-mono text-5xl font-bold text-text-primary leading-tight tracking-tight">
+          <h1
+            className="text-6xl text-text-primary leading-[1.05] tracking-tight"
+            style={{
+              fontFamily: "'Cormorant Garamond', 'Times New Roman', serif",
+              fontWeight: 300,
+              fontStyle: 'italic',
+            }}
+          >
             Distributed teams.
             <br />
             Shared decisions.
           </h1>
 
-          <p className="text-text-secondary text-lg leading-relaxed">
+          <p
+            className="text-text-secondary text-lg leading-relaxed tracking-wide"
+            style={{ fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 300 }}
+          >
             A workspace built for AI-native engineering.
           </p>
 
@@ -109,9 +130,20 @@ export default function Scene() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com"
-              className="bg-surface-raised/60 backdrop-blur-sm border border-border-subtle rounded-lg px-4 py-2.5 text-text-primary placeholder:text-text-muted text-sm w-64 focus:outline-none focus:border-accent transition-colors"
+              className="backdrop-blur-sm rounded-lg px-4 py-2.5 text-text-primary placeholder:text-text-muted text-sm w-64 focus:outline-none transition-colors"
+              style={{
+                background: 'rgba(28, 16, 18, 0.55)',
+                border: '1px solid #3a2421',
+                fontFamily: "'Inter', system-ui, sans-serif",
+              }}
             />
-            <button className="bg-accent hover:bg-accent-hover text-white font-medium px-5 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap">
+            <button
+              className="bg-gradient-to-br from-rose-400 to-rose-600 text-white font-medium px-5 py-2.5 rounded-lg text-sm transition-all whitespace-nowrap"
+              style={{
+                boxShadow: '0 0 24px rgba(255, 107, 97, 0.35)',
+                fontFamily: "'Inter', system-ui, sans-serif",
+              }}
+            >
               Get early access
             </button>
           </div>
