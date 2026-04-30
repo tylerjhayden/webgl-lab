@@ -15,26 +15,32 @@ export default function Sidebar() {
       </div>
 
       <nav className="py-2">
-        {experiments.map((experiment) => (
-          <NavLink
-            key={experiment.slug}
-            to={`/experiment/${experiment.slug}`}
-            className={({ isActive }) =>
-              `block px-4 py-2.5 no-underline transition-colors border-l-2 ${
-                isActive
-                  ? 'bg-surface-overlay border-accent text-text-primary'
-                  : 'border-transparent text-text-secondary hover:bg-surface-overlay/50 hover:text-text-primary'
-              }`
-            }
-          >
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-sm font-medium truncate">
-                {experiment.title}
-              </span>
-              <DifficultyDots level={experiment.difficulty} size="xs" />
-            </div>
-          </NavLink>
-        ))}
+        {experiments.map((experiment) => {
+          const number = experiment.slug.match(/^\d+/)?.[0] ?? ''
+          return (
+            <NavLink
+              key={experiment.slug}
+              to={`/experiment/${experiment.slug}`}
+              className={({ isActive }) =>
+                `block px-4 py-2.5 no-underline transition-colors border-l-2 ${
+                  isActive
+                    ? 'bg-surface-overlay border-accent text-text-primary'
+                    : 'border-transparent text-text-secondary hover:bg-surface-overlay/50 hover:text-text-primary'
+                }`
+              }
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-text-muted font-mono text-xs tabular-nums w-6 shrink-0">
+                  {number}
+                </span>
+                <span className="text-sm font-medium truncate flex-1">
+                  {experiment.title}
+                </span>
+                <DifficultyDots level={experiment.difficulty} size="xs" />
+              </div>
+            </NavLink>
+          )
+        })}
       </nav>
     </aside>
   )
