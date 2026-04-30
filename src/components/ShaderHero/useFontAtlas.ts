@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import * as THREE from 'three'
 
 export type FontAtlasOptions = {
@@ -56,7 +56,11 @@ export function useFontAtlas(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [charsKey, fontStack, cellSize, bold, fontScale])
 
-  useEffect(() => () => texture.dispose(), [texture])
+  // Intentionally not disposing in a useEffect cleanup: under React StrictMode,
+  // the simulated unmount disposes the texture while useMemo's cache still
+  // references it, leaving the consumer holding a disposed texture on remount.
+  // Deps here are stable for a component's lifetime; the texture is reclaimed
+  // when the host <Canvas> unmounts and the GL context is released.
 
   return texture
 }
