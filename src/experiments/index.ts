@@ -25,8 +25,6 @@ export const experiments: Experiment[] = Object.entries(metaModules)
   .filter((e) => e.Scene) // only include experiments with a matching Scene
   .sort((a, b) => a.slug.localeCompare(b.slug))
 
-export const allTags: string[] = [...new Set(experiments.flatMap((e) => e.tags))].sort()
-
 export function getExperiment(slug: string): Experiment | undefined {
   return experiments.find((e) => e.slug === slug)
 }

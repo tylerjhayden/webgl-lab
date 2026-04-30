@@ -39,19 +39,9 @@ export default function ExperimentCard({ experiment, index }: ExperimentCardProp
           </h3>
           <DifficultyDots level={experiment.difficulty} />
         </div>
-        <p className="text-text-muted text-xs leading-relaxed mb-3">
+        <p className="text-text-muted text-xs leading-relaxed">
           {experiment.description}
         </p>
-        <div className="flex flex-wrap gap-1.5">
-          {experiment.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-2 py-0.5 rounded-md bg-surface-overlay text-text-muted text-[10px] font-medium"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
       </div>
     </Link>
   )
