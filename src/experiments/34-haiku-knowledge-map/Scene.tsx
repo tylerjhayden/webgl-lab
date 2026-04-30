@@ -157,7 +157,40 @@ export default function Scene() {
       </div>
 
       <div className="relative z-[5] flex flex-col items-center justify-center h-full pt-16 px-4 pointer-events-none">
-        <div className="max-w-2xl text-center space-y-6">
+        <div
+          className="relative max-w-2xl text-center space-y-6"
+          style={{
+            background: 'rgba(247, 239, 217, 0.94)',
+            padding: '3rem 3.5rem',
+            borderRadius: '4px',
+            boxShadow:
+              '0 8px 28px rgba(42, 38, 32, 0.10), 0 2px 6px rgba(42, 38, 32, 0.06)',
+          }}
+        >
+          {/* Washi tape — pinned-in specimen card */}
+          <div
+            className="absolute pointer-events-none"
+            style={{
+              top: '-10px',
+              left: '36px',
+              width: '88px',
+              height: '20px',
+              background: 'rgba(107, 117, 79, 0.32)',
+              transform: 'rotate(-4deg)',
+            }}
+          />
+          <div
+            className="absolute pointer-events-none"
+            style={{
+              top: '-10px',
+              right: '36px',
+              width: '88px',
+              height: '20px',
+              background: 'rgba(107, 117, 79, 0.32)',
+              transform: 'rotate(4deg)',
+            }}
+          />
+
           <h1
             className="text-5xl text-text-primary leading-tight tracking-tight"
             style={{

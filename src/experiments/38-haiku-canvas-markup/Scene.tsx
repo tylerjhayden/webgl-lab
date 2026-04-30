@@ -118,7 +118,15 @@ export default function Scene() {
       />
 
       <div className="relative z-[5] flex flex-col items-center justify-center h-full pt-16 px-4 pointer-events-none">
-        <div className="max-w-2xl text-center space-y-6">
+        <div
+          className="relative max-w-2xl text-center space-y-6"
+          style={{
+            background: 'rgba(253, 246, 230, 0.92)',
+            padding: '3.5rem 4rem',
+            border: '1px solid rgba(26, 24, 20, 0.16)',
+            boxShadow: '0 1px 2px rgba(26, 24, 20, 0.04)',
+          }}
+        >
           <h1
             className="text-5xl text-text-primary leading-tight tracking-tight"
             style={{

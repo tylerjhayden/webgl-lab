@@ -146,7 +146,23 @@ export default function Scene() {
       </div>
 
       <div className="relative z-[5] flex flex-col items-center justify-center h-full pt-16 px-4 pointer-events-none">
-        <div className="max-w-2xl text-center space-y-6">
+        <div className="relative max-w-2xl">
+          {/* Carbon-copy duplicate — offset registration */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'rgba(140, 77, 51, 0.18)',
+              transform: 'translate(5px, 5px)',
+            }}
+          />
+          <div
+            className="relative text-center space-y-6"
+            style={{
+              background: 'rgba(248, 240, 222, 0.92)',
+              padding: '3rem 3.5rem',
+              border: '1px solid rgba(46, 35, 30, 0.4)',
+            }}
+          >
           <h1
             className="text-5xl text-text-primary leading-tight tracking-tight"
             style={{
@@ -189,6 +205,7 @@ export default function Scene() {
             >
               Get early access
             </button>
+          </div>
           </div>
         </div>
       </div>

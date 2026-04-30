@@ -118,7 +118,42 @@ export default function Scene() {
       />
 
       <div className="relative z-[5] flex flex-col items-center justify-center h-full pt-16 px-4 pointer-events-none">
-        <div className="max-w-2xl text-center space-y-6">
+        <div
+          className="relative max-w-2xl text-center space-y-6"
+          style={{
+            background: 'rgba(244, 236, 214, 0.88)',
+            padding: '3rem 3.5rem',
+            border: '1px solid rgba(184, 107, 66, 0.55)',
+            outline: '1px solid rgba(184, 107, 66, 0.55)',
+            outlineOffset: '5px',
+          }}
+        >
+          {/* Cartographic registration ticks */}
+          <span
+            className="absolute select-none"
+            style={{ top: '-12px', left: '-12px', color: '#b86b42', fontSize: '14px', lineHeight: 1 }}
+          >
+            +
+          </span>
+          <span
+            className="absolute select-none"
+            style={{ top: '-12px', right: '-12px', color: '#b86b42', fontSize: '14px', lineHeight: 1 }}
+          >
+            +
+          </span>
+          <span
+            className="absolute select-none"
+            style={{ bottom: '-12px', left: '-12px', color: '#b86b42', fontSize: '14px', lineHeight: 1 }}
+          >
+            +
+          </span>
+          <span
+            className="absolute select-none"
+            style={{ bottom: '-12px', right: '-12px', color: '#b86b42', fontSize: '14px', lineHeight: 1 }}
+          >
+            +
+          </span>
+
           <h1
             className="text-5xl text-text-primary leading-tight tracking-tight"
             style={{
