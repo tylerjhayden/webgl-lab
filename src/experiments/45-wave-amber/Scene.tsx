@@ -52,7 +52,7 @@ export default function Scene() {
       </div>
 
       <div className="relative z-[5] flex flex-col items-center justify-center h-full pt-14 px-4 pointer-events-none">
-        <div className="max-w-2xl text-center space-y-7">
+        <div className="max-w-2xl text-center space-y-7 bg-surface-overlay backdrop-blur-md rounded-md px-10 py-12 border border-border-subtle pointer-events-auto shadow-[0_8px_40px_rgba(61,32,15,0.18)]">
           {/* fleuron */}
           <div className="text-text-secondary text-2xl leading-none opacity-70 select-none"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}>❦</div>
@@ -69,7 +69,7 @@ export default function Scene() {
             eep ADRs anchored to the systems they describe — not buried in a folder no one opens.
           </p>
 
-          <div className="flex items-center justify-center gap-3 pointer-events-auto pt-2">
+          <div className="flex items-center justify-center gap-3">
             <input type="email" value={email} onChange={e => setEmail(e.target.value)}
               placeholder="your@email.com"
               className="bg-surface-raised backdrop-blur-[1px] border border-border-subtle rounded-full px-5 py-2.5 text-text-primary placeholder:text-text-muted text-sm w-64 focus:outline-none focus:border-accent transition-colors italic"
