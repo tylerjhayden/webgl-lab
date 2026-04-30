@@ -1,35 +1,16 @@
-import { Component, lazy, Suspense, type ComponentType, type LazyExoticComponent, type ReactNode } from 'react'
+import { Component, lazy, Suspense, useMemo, type ReactNode } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { getExperiment } from '../experiments'
 import ExperimentWrapper from './ExperimentWrapper'
 
-// Module-level cache: one stable lazy() wrapper per slug. Prevents the
-// useMemo-recreates-lazy-every-render → suspend → resolve → re-render loop.
-const lazyCache = new Map<string, LazyExoticComponent<ComponentType<unknown>>>()
-
-function getLazyScene(slug: string, loader: () => Promise<{ default: ComponentType<unknown> }>) {
-  let cached = lazyCache.get(slug)
-  if (!cached) {
-    cached = lazy(loader)
-    lazyCache.set(slug, cached)
-  }
-  return cached
-}
-
 class SceneErrorBoundary extends Component<
-  { resetKey: string; children: ReactNode },
+  { children: ReactNode },
   { error: Error | null }
 > {
-  state = { error: null as Error | null }
+  state: { error: Error | null } = { error: null }
 
   static getDerivedStateFromError(error: Error) {
     return { error }
-  }
-
-  componentDidUpdate(prev: { resetKey: string }) {
-    if (prev.resetKey !== this.props.resetKey && this.state.error) {
-      this.setState({ error: null })
-    }
   }
 
   componentDidCatch(error: Error, info: { componentStack?: string }) {
@@ -39,11 +20,11 @@ class SceneErrorBoundary extends Component<
   render() {
     if (this.state.error) {
       return (
-        <div className="flex flex-col items-start justify-start h-full p-8 gap-3 overflow-auto bg-red-950">
-          <p className="text-red-300 font-mono font-bold text-base">
-            Scene CRASHED: {this.props.resetKey}
+        <div className="flex flex-col items-start justify-start h-full p-8 gap-3 overflow-auto bg-surface-raised">
+          <p className="text-text-primary font-mono font-bold text-base">
+            Scene crashed
           </p>
-          <pre className="text-red-200 font-mono text-xs whitespace-pre-wrap leading-relaxed">
+          <pre className="text-text-secondary font-mono text-xs whitespace-pre-wrap leading-relaxed">
             {this.state.error.message}
             {'\n\n'}
             {this.state.error.stack}
@@ -62,7 +43,12 @@ export default function ExperimentViewer() {
   const { slug } = useParams<{ slug: string }>()
   const experiment = slug ? getExperiment(slug) : undefined
 
-  if (!experiment) {
+  const LazyScene = useMemo(
+    () => (experiment ? lazy(experiment.Scene) : null),
+    [experiment],
+  )
+
+  if (!experiment || !LazyScene) {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4">
         <p className="text-text-secondary text-lg">Experiment not found: {slug}</p>
@@ -73,23 +59,21 @@ export default function ExperimentViewer() {
     )
   }
 
-  const LazyScene = getLazyScene(experiment.slug, experiment.Scene as () => Promise<{ default: ComponentType<unknown> }>)
-
   return (
     <div className="relative h-full">
-      <SceneErrorBoundary resetKey={experiment.slug}>
+      <SceneErrorBoundary key={experiment.slug}>
         <Suspense
           fallback={
             <div className="flex items-center justify-center h-full">
-              <div className="text-text-muted animate-pulse">Loading {experiment.slug}…</div>
+              <div className="text-text-muted animate-pulse">Loading experiment...</div>
             </div>
           }
         >
           {experiment.ownsCanvas ? (
-            <LazyScene key={experiment.slug} />
+            <LazyScene />
           ) : (
             <ExperimentWrapper>
-              <LazyScene key={experiment.slug} />
+              <LazyScene />
             </ExperimentWrapper>
           )}
         </Suspense>
