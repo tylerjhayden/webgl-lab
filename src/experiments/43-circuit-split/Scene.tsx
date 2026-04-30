@@ -4,12 +4,17 @@ import fragmentShader from './shaders/main.frag'
 
 const ATLAS_CHARS = ['·', '─', '│', '┼', '╔', '╗', '╚', '╝']
 
+const THEME = {
+  '--color-accent': '#1F5F3F',
+  '--color-accent-hover': '#164B30',
+} as React.CSSProperties
+
 export default function Scene() {
   const atlas = useFontAtlas(ATLAS_CHARS)
   const [email, setEmail] = useState('')
 
   return (
-    <div className="relative w-full h-full bg-surface">
+    <div className="relative w-full h-full bg-surface" style={THEME}>
       <div className="absolute inset-0 flex">
         <ShaderHero
           fragmentShader={fragmentShader}

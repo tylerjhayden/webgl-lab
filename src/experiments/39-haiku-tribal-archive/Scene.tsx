@@ -4,12 +4,17 @@ import fragmentShader from './shaders/topology.frag'
 
 const ATLAS_CHARS = ['∑', '∫', '√', 'λ', '∞', 'π', 'μ', 'Δ']
 
+const THEME = {
+  '--color-accent': '#6E4E2C',
+  '--color-accent-hover': '#5A3F23',
+} as React.CSSProperties
+
 export default function Scene() {
   const atlas = useFontAtlas(ATLAS_CHARS)
   const [email, setEmail] = useState('')
 
   return (
-    <ShaderHero fragmentShader={fragmentShader} uniforms={{ uAtlas: { value: atlas } }}>
+    <ShaderHero fragmentShader={fragmentShader} uniforms={{ uAtlas: { value: atlas } }} theme={THEME}>
       <div className="relative z-[5] flex flex-col items-center justify-center h-full pt-16 px-4 pointer-events-none">
         <div className="max-w-2xl text-center space-y-6">
           <h1 className="font-serif text-5xl font-bold text-text-primary leading-tight tracking-tight">

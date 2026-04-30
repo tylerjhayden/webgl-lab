@@ -18,7 +18,7 @@ const float MOUSE_RADIUS = 0.15;
 const float MOUSE_STRENGTH = 0.5;
 
 const vec3 BASE_COLOR = vec3(0.39, 0.42, 0.53);    // text-muted-ish gray
-const vec3 ACCENT_COLOR = vec3(0.388, 0.4, 0.945);  // #6366f1 indigo accent
+const vec3 ACCENT_COLOR = vec3(0.722, 0.522, 0.235);  // #B8853C topographic ochre
 
 void main() {
   // Aspect-correct grid sizing

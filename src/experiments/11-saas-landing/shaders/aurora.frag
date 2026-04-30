@@ -36,10 +36,10 @@ void main() {
   // Wide halo
   float haloGlow = exp(-distFromMouse * distFromMouse * 16.0) * 0.12;
 
-  // Noise-modulated accent hue — shifts between indigo and purple
+  // Noise-modulated accent hue — shifts between bronze and warm amber
   float noiseVal = snoise(vec3(uv * 2.0, uTime * 0.15));
-  vec3 accentBase = vec3(0.388, 0.400, 0.945); // #6366f1
-  vec3 accentShift = vec3(0.55, 0.35, 0.95);   // soft purple
+  vec3 accentBase = vec3(0.788, 0.478, 0.239); // #C97A3D bronze
+  vec3 accentShift = vec3(0.95, 0.65, 0.32);   // warm amber
   vec3 accent = mix(accentBase, accentShift, noiseVal * 0.5 + 0.5);
 
   vec3 glowColor = accent * (coreGlow + haloGlow);

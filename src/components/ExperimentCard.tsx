@@ -3,12 +3,12 @@ import type { Experiment } from '../types/experiment'
 import DifficultyDots from './DifficultyDots'
 
 const gradients = [
-  'from-indigo-500/20 to-purple-500/20',
+  'from-amber-500/20 to-rose-500/20',
   'from-cyan-500/20 to-blue-500/20',
   'from-emerald-500/20 to-teal-500/20',
   'from-orange-500/20 to-red-500/20',
   'from-pink-500/20 to-rose-500/20',
-  'from-violet-500/20 to-fuchsia-500/20',
+  'from-slate-500/20 to-teal-500/20',
 ]
 
 interface ExperimentCardProps {

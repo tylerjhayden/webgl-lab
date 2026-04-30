@@ -9,8 +9,8 @@ export default function Scene() {
   const meshRef = useRef<THREE.Mesh>(null)
 
   const { colorA, colorB, amplitude, speed } = useControls('Shader Gradient', {
-    colorA: '#6366f1',
-    colorB: '#ec4899',
+    colorA: '#D97706',
+    colorB: '#1F5F8C',
     amplitude: { value: 0.3, min: 0, max: 1, step: 0.01 },
     speed: { value: 1, min: 0, max: 3, step: 0.1 },
   })

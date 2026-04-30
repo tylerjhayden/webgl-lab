@@ -1,6 +1,11 @@
+const THEME = {
+  '--color-accent': '#C97A3D',
+  '--color-accent-hover': '#A86530',
+} as React.CSSProperties
+
 export default function CallToAction() {
   return (
-    <section className="relative w-full bg-surface border-t border-border-subtle">
+    <section className="relative w-full bg-surface border-t border-border-subtle" style={THEME}>
       <div className="flex flex-col items-center justify-center min-h-[50vh] px-6 py-24">
         <div className="max-w-xl text-center space-y-6">
           <h2 className="text-4xl font-bold text-text-primary leading-tight">

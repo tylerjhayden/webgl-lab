@@ -25,7 +25,7 @@ function createScene(container: HTMLDivElement): () => void {
 
   const geometry = new THREE.TorusKnotGeometry(1, 0.35, 128, 32)
   const material = new THREE.MeshPhysicalMaterial({
-    color: '#6366f1',
+    color: '#B7410E',
     metalness: 0.7,
     roughness: 0.2,
     clearcoat: 1,

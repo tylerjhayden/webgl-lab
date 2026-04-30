@@ -75,7 +75,7 @@ void main() {
   // Base grid color (cool grey)
   vec3 gridColor = vec3(0.35, 0.38, 0.5);
   // Accent color for mouse glow
-  vec3 accentColor = vec3(0.388, 0.400, 0.945); // #6366f1
+  vec3 accentColor = vec3(0.788, 0.478, 0.239); // #C97A3D bronze
 
   vec3 color = grid * gridColor + mouseGlow * accentColor;
 

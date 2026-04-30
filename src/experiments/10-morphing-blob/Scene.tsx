@@ -12,7 +12,7 @@ export default function Scene() {
     useControls('Morphing Blob', {
       speed: { value: 3, min: 0.5, max: 10, step: 0.5 },
       distort: { value: 0.5, min: 0, max: 1, step: 0.01 },
-      color: '#6366f1',
+      color: '#0F4C5C',
       emissiveIntensity: { value: 0.8, min: 0, max: 3, step: 0.1 },
       metalness: { value: 0.9, min: 0, max: 1, step: 0.05 },
       iridescence: { value: 1, min: 0, max: 1, step: 0.05 },

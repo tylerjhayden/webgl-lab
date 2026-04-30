@@ -58,7 +58,7 @@ function CenterPiece() {
       <torusKnotGeometry args={[0.8, 0.3, 128, 32]} />
       <meshStandardMaterial
         color="#ffffff"
-        emissive="#6366f1"
+        emissive="#FF6B35"
         emissiveIntensity={0.5}
         metalness={0.9}
         roughness={0.1}

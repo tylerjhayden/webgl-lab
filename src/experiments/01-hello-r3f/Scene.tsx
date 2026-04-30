@@ -7,7 +7,7 @@ export default function Scene() {
   const meshRef = useRef<Mesh>(null)
 
   const { color, speed, scale, wireframe } = useControls('Hello R3F', {
-    color: '#6366f1',
+    color: '#D97706',
     speed: { value: 1, min: 0, max: 5, step: 0.1 },
     scale: { value: 1, min: 0.2, max: 3, step: 0.1 },
     wireframe: false,

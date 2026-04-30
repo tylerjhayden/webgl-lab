@@ -6,6 +6,11 @@ const RUNE_CHARS = ['ᛁ', 'ᛚ', 'ᚲ', 'ᚱ', 'ᚦ', 'ᛟ', 'ᛒ', 'ᛞ']
 const WISDOM_TOKENS = ['TODO', 'FIXME', 'WTF', 'OLD', 'WIP', 'ASK BOB', 'RTFM', 'RIP']
 const FONT_STACK = 'Menlo, Monaco, "Courier New", monospace'
 
+const THEME = {
+  '--color-accent': '#A0522D',
+  '--color-accent-hover': '#7F4220',
+} as React.CSSProperties
+
 export default function Scene() {
   const runeAtlas = useFontAtlas(RUNE_CHARS, { fontStack: FONT_STACK })
   const wisdomAtlas = useFontAtlas(WISDOM_TOKENS, { fontStack: FONT_STACK, bold: true, fontScale: 0.55 })
@@ -19,6 +24,7 @@ export default function Scene() {
         uAtlas: { value: runeAtlas },
         uAtlasWisdom: { value: wisdomAtlas },
       }}
+      theme={THEME}
     >
       <div className="relative z-[5] flex flex-col items-center justify-center h-full pt-16 px-4 pointer-events-none">
         <div className="max-w-2xl text-center space-y-6">

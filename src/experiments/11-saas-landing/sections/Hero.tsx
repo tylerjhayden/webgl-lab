@@ -3,11 +3,16 @@ import { Canvas } from '@react-three/fiber'
 import ShaderQuad from '../ShaderQuad'
 import fragmentShader from '../shaders/void-grid.frag'
 
+const THEME = {
+  '--color-accent': '#C97A3D',
+  '--color-accent-hover': '#A86530',
+} as React.CSSProperties
+
 export default function Hero() {
   const sectionRef = useRef<HTMLDivElement>(null)
 
   return (
-    <section ref={sectionRef} className="relative w-full h-screen bg-surface">
+    <section ref={sectionRef} className="relative w-full h-screen bg-surface" style={THEME}>
       <Canvas
         className="!absolute inset-0"
         gl={{ alpha: true, premultipliedAlpha: false, antialias: false }}

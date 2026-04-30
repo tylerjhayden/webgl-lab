@@ -4,6 +4,11 @@ import fragmentShader from './shaders/main.frag'
 
 const ATLAS_CHARS = ['·', '⌘', '⎋', '⌃', '⇧', '⌫', '⏎', '⇥']
 
+const THEME = {
+  '--color-accent': '#4A8B7C',
+  '--color-accent-hover': '#3A6E60',
+} as React.CSSProperties
+
 export default function Scene() {
   const atlas = useFontAtlas(ATLAS_CHARS, {
     fontStack: '"SF Mono", "Menlo", "Monaco", monospace',
@@ -11,7 +16,7 @@ export default function Scene() {
   const [email, setEmail] = useState('')
 
   return (
-    <ShaderHero fragmentShader={fragmentShader} uniforms={{ uAtlas: { value: atlas } }}>
+    <ShaderHero fragmentShader={fragmentShader} uniforms={{ uAtlas: { value: atlas } }} theme={THEME}>
       <div className="relative z-[5] flex flex-col items-center justify-center h-full pt-16 px-4 pointer-events-none">
         <div className="max-w-2xl text-center space-y-6">
           <h1 className="font-mono text-5xl font-bold text-text-primary leading-tight tracking-tight">
