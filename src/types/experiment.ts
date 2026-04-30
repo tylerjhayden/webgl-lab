@@ -6,6 +6,8 @@ export interface ExperimentMeta {
   ownsCanvas: boolean
   difficulty: 1 | 2 | 3
   date: string
+  starred?: boolean
+  folder?: string
 }
 
 export interface Experiment extends ExperimentMeta {
