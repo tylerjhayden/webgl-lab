@@ -1,11 +1,11 @@
-import { useRef, useMemo } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { ScreenQuad } from '@react-three/drei'
 import * as THREE from 'three'
 import vertexShader from './shaders/screen.vert'
 import fragmentShader from './shaders/displacement.frag'
 
-function DisplacementQuad() {
+function DisplacementQuad({ pointerUvRef }: { pointerUvRef: React.RefObject<THREE.Vector2> }) {
   const materialRef = useRef<THREE.ShaderMaterial>(null)
   const mouseRef = useRef(new THREE.Vector2(0.5, 0.5))
   const prevMouseRef = useRef(new THREE.Vector2(0.5, 0.5))
@@ -22,17 +22,16 @@ function DisplacementQuad() {
     [],
   )
 
-  useFrame(({ clock, pointer }) => {
+  useFrame(({ clock }) => {
     if (!materialRef.current) return
     const u = materialRef.current.uniforms
 
     u.uTime.value = clock.getElapsedTime()
     u.uResolution.value.set(size.width, size.height)
 
-    const targetX = (pointer.x + 1) * 0.5
-    const targetY = (pointer.y + 1) * 0.5
-    mouseRef.current.x += (targetX - mouseRef.current.x) * 0.08
-    mouseRef.current.y += (targetY - mouseRef.current.y) * 0.08
+    const target = pointerUvRef.current
+    mouseRef.current.x += (target.x - mouseRef.current.x) * 0.08
+    mouseRef.current.y += (target.y - mouseRef.current.y) * 0.08
     u.uMouse.value.copy(mouseRef.current)
 
     velocityRef.current.set(
@@ -58,6 +57,20 @@ function DisplacementQuad() {
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const pointerUvRef = useRef(new THREE.Vector2(0.5, 0.5))
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const onMove = (e: PointerEvent) => {
+      const rect = el.getBoundingClientRect()
+      const x = (e.clientX - rect.left) / rect.width
+      const y = 1 - (e.clientY - rect.top) / rect.height
+      pointerUvRef.current.set(x, y)
+    }
+    el.addEventListener('pointermove', onMove)
+    return () => el.removeEventListener('pointermove', onMove)
+  }, [])
 
   return (
     <section ref={containerRef} className="relative h-screen w-full">
@@ -84,10 +97,8 @@ export default function Hero() {
         className="!absolute inset-0"
         gl={{ alpha: false, antialias: false }}
         dpr={[1, 1.5]}
-        eventSource={containerRef as React.RefObject<HTMLElement>}
-        eventPrefix="client"
       >
-        <DisplacementQuad />
+        <DisplacementQuad pointerUvRef={pointerUvRef} />
       </Canvas>
 
       <div className="relative z-[5] flex flex-col h-full pointer-events-none select-none">

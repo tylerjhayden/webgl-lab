@@ -1,5 +1,6 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
+import * as THREE from 'three'
 import ShaderQuad from '../ShaderQuad'
 import fragmentShader from '../shaders/void-grid.frag'
 
@@ -10,6 +11,20 @@ const THEME = {
 
 export default function Hero() {
   const sectionRef = useRef<HTMLDivElement>(null)
+  const pointerUvRef = useRef(new THREE.Vector2(0.5, 0.5))
+
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const onMove = (e: PointerEvent) => {
+      const rect = el.getBoundingClientRect()
+      const x = (e.clientX - rect.left) / rect.width
+      const y = 1 - (e.clientY - rect.top) / rect.height
+      pointerUvRef.current.set(x, y)
+    }
+    el.addEventListener('pointermove', onMove)
+    return () => el.removeEventListener('pointermove', onMove)
+  }, [])
 
   return (
     <section ref={sectionRef} className="relative w-full h-screen bg-surface" style={THEME}>
@@ -17,10 +32,8 @@ export default function Hero() {
         className="!absolute inset-0"
         gl={{ alpha: true, premultipliedAlpha: false, antialias: false }}
         dpr={[1, 1.5]}
-        eventSource={sectionRef as React.RefObject<HTMLElement>}
-        eventPrefix="client"
       >
-        <ShaderQuad fragmentShader={fragmentShader} />
+        <ShaderQuad fragmentShader={fragmentShader} pointerUvRef={pointerUvRef} />
       </Canvas>
 
       <div className="relative z-[5] flex flex-col items-center justify-center h-full px-4 pointer-events-none">
