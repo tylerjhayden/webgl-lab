@@ -6,4 +6,5 @@ export const meta: ExperimentMeta = {
   ownsCanvas: false,
   difficulty: 2,
   date: '2026-04-15',
+  folder: "webgl explore",
 }
